@@ -2,22 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use App\Models\Category;
+use Closure;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Category;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CategoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CategoryResource\RelationManagers;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'Contents';
 
     public static function form(Form $form): Form
     {
@@ -26,11 +30,16 @@ class CategoryResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255)
-                    ->default('Title'),
+                    ->reactive()
+                    ->afterStateUpdated(function($set , $state ) {
+
+                        // create slug when enter title 
+                        $set('slug', Str::slug($state));
+                        
+                     }),
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->maxLength(255)
-                    ->default('slug'),
+                    ->maxLength(255),
             ]);
     }
 
@@ -40,12 +49,6 @@ class CategoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
