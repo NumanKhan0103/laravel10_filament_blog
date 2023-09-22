@@ -94,6 +94,8 @@
     <div class="container mx-auto flex flex-wrap py-6">
 
 
+        {{-- https://github.com/davidgrzyb/tailwind-blog-template/blob/master/blog.html --}}
+
         {{  $slot }} 
 
       
