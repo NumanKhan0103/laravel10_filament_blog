@@ -1,14 +1,12 @@
 <article class="flex flex-col shadow my-4">
     <!-- Article Image -->
-    {{-- {{ dd($post) }} --}}
     <a href="#" class="hover:opacity-75">
         <img src="{{ $post->getThumbnail() }}">
     </a>
     <div class="bg-white flex flex-col justify-start p-6">
 
-        {{-- {{  dd($post->categories()) }} --}}
-
         {{-- show categorys --}}
+
         {{-- @foreach ($post->categories as $category)  --}}
 
         {{-- <a href="#" class="text-blue-700 text-sm font-bold uppercase pb-4"> {{ $category->title  }} </a> --}}
